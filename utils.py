@@ -14,22 +14,22 @@ def load_train_data(path, labels_path=None):
     if labels_path:
         train_labels = np.array(pd.read_csv(labels_path, header=None))
     else:
-        train_text, train_labels = train_text[:, 0], train_text[:, 1]
+        train_labels, train_text = train_text[:, 0], train_text[:, 1]
     train_labels = to_categorical(train_labels)
 
     return (train_text, train_labels)
 
 
-def text_to_array(text, max_len, vocabulary):
+def text_to_array(text, maxlen, vocabulary):
     '''
-    Iterate over the loaded text and create a matrix of size (len(text), max_len)
+    Iterate over the loaded text and create a matrix of size (len(text), maxlen)
     Each character is encoded into a one-hot array later at the lambda layer.
     Chars not in the vocab are encoded as -1, into an all zero vector.
     '''
 
-    text_array = np.zeros((len(text), max_len), dtype=np.int)
+    text_array = np.zeros((len(text), maxlen), dtype=np.int)
     for row, line in enumerate(text):
-        for column in range(min([len(line), max_len])):
+        for column in range(min([len(line), maxlen])):
             text_array[row, column] = vocabulary.get(line[column], -1)  # if not in vocabulary_size, return -1
 
     return text_array
